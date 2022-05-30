@@ -159,6 +159,57 @@ const nuevoPassword = async (req, res) => {
     }
 };
 
+const actualizarPerfil = async (req, res) => {
+    const administrador = await Administrador.findById(req.params.id);
+    if(!administrador) {
+        const error = new Error('Hubo un error')
+        return res.status(400).json({msg: error.message})
+    }
+
+    const {email} = req.body
+    if(administrador.email !== req.body.email) {
+        const existeEmail = await Administrador.findOne({email})
+        if(existeEmail){
+            const error = new Error('Oops! Este Email ya Esta en Uso')
+            return res.status(400).json({msg: error.message})
+        }
+    }
+
+    try {
+        administrador.nombre = req.body.nombre;
+        administrador.email = req.body.email;
+        administrador.web = req.body.web;
+        administrador.telefono = req.body.telefono;
+
+        const administradorActualizado = await administrador.save()
+        res.json(administradorActualizado)
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+const actualizarPassword = async (req, res) => {
+    // Leer los datos
+    const {id} = req.administrador
+    const {pwd_actual, pwd_nuevo} = req.body
+    //Comprobar que existe el admin
+    const administrador = await Administrador.findById(id);
+    if(!administrador) {
+        const error = new Error('Hubo un error')
+        return res.status(400).json({msg: error.message})
+    }
+    //Comprobar password
+    if(await administrador.comprobarPassword(pwd_actual)) {
+    //Almacenar Password
+        administrador.password = pwd_nuevo
+        await administrador.save();
+        res.json({msg: 'Password Almacenado Correctamente'})
+    } else {
+        const error = new Error('Oops! El Password Actual es Incorrecto')
+        return res.status(400).json({msg: error.message})
+    }
+}
+
 export {
     registrar,
     perfil,
@@ -166,5 +217,7 @@ export {
     autenticar,
     olvidePassword,
     comprobarToken,
-    nuevoPassword
+    nuevoPassword, 
+    actualizarPerfil,
+    actualizarPassword
 }

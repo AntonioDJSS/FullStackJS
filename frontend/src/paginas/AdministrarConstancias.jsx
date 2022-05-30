@@ -17,7 +17,7 @@ function AdministrarConstancias() {
             <Formulario />
           </div>
 
-          <div className="md:w-1/2 lg:w-3/5">
+          <div className="md:w-screen sm:w-screen">
             <ListadoClientes />
           </div>
         </div>

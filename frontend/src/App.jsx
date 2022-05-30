@@ -8,6 +8,8 @@ import OlvidePassword from "./paginas/OlvidePassword";
 import ConfirmarCuenta from "./paginas/ConfirmarCuenta";
 import NuevoPassword from "./paginas/NuevoPassword";
 import AdministrarConstancias from "./paginas/AdministrarConstancias";
+import EditarPerfil from "./paginas/EditarPerfil";
+import CambiarPassword from "./paginas/CambiarPassword";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ClientesProvider } from "./context/ClientesProvider";
@@ -28,6 +30,8 @@ function App() {
         
             <Route path="/admin" element={<RutaProtegida />}> {/* Rutas del Area Privada */}
             <Route index element={<AdministrarConstancias />} />
+            <Route path="perfil" element={<EditarPerfil />} />
+            <Route path="cambiar-password" element={<CambiarPassword />} />
             </Route>
           </Routes>
         </ClientesProvider>
